@@ -95,3 +95,17 @@ int PIT_Init (PIT_Channel chan, PIT_Interrupt intState, unsigned long ulBusRate,
 
     return 1;
 }
+// blocking sleep for the specified number of ms, using the specified channel
+//  requires init to reset enable of channel to reload counts
+//  sleep can be longer than expected, as it has to eat the startup time
+//   for init, so shorter delays will be longer than expected (.115ms in this lib)
+int PIT_Sleep (PIT_Channel chan, unsigned long ulBusRate, unsigned int ms) {
+    int i;
+    for(i = 0; i < ms; i++) {
+        PIT_Init(chan, PIT_Interrupt_Off, ulBusRate, 1000);
+        #define flgClr(x) \
+            PITTF |= PITTF_PTF##x##_MASK; \
+            while(!(PITTF & PITTF_PTF##x##_MASK));
+        flgClr(chan);
+    }
+}
