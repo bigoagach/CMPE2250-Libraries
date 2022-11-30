@@ -34,6 +34,9 @@ void sci0_txByte (unsigned char data);
 // send a null-terminated string over SCI
 void sci0_txStr (char const * straddr);
 
+// checks to see if byte is sent
+int sci0_txNonByte (unsigned char data);
+
 // receive a string from the SCI
 // up to buffer size-1 (string always NULL terminated)
 // number of characters is BufferSize minus one for null

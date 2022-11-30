@@ -37,7 +37,7 @@ int sci0_read (unsigned char * pData) {
     //byte not read?
     if(!SCI0SR1_RDRF) 
         return 0;
-
+    
     *pData = SCI0DRL;
 
     return 1;
@@ -54,4 +54,14 @@ void sci0_txByte (unsigned char data) {
     while(!(SCI0SR1_TDRE /*&& SWL_Transition (SWL_CTR)*/));
 
     SCI0DRL = data;
+}
+
+int sci0_txNonByte (unsigned char data) {
+    if(!SCI0SR1_TDRE)
+        return 0;
+    else {
+        SCI0DRL = data;
+
+        return 1;
+    }
 }
