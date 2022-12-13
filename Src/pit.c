@@ -102,8 +102,9 @@ int PIT_Init (PIT_Channel chan, PIT_Interrupt intState, unsigned long ulBusRate,
 int PIT_Sleep (PIT_Channel chan, unsigned long ulBusRate, unsigned int ms) {
     int i;
     for(i = 0; i < ms; i++) {
-        PIT_Init(PIT_Channel_0, PIT_Interrupt_Off, ulBusRate, 1000);
+        (void)PIT_Init(PIT_Channel_0, PIT_Interrupt_Off, ulBusRate, 1000);
         PITTF |= PITTF_PTF0_MASK; 
         while(!(PITTF & PITTF_PTF0_MASK));
     }
+    return chan;
 }
